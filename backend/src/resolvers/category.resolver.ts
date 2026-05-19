@@ -7,7 +7,10 @@ import {
   UseMiddleware,
 } from 'type-graphql';
 import type { User } from '../../prisma/generated/client';
-import { CategoryInput } from '../dtos/input/category.input';
+import {
+  CategoryInput,
+  UpdateCategoryInput,
+} from '../dtos/input/category.input';
 import { GqlUser } from '../graphql/decorators/user.decorator';
 import { IsAuth } from '../middlewares/auth.middleware';
 import { CategoryModel } from '../models/category.model';
@@ -27,6 +30,14 @@ export class CategoryResolver {
     @GqlUser() user: User,
   ): Promise<CategoryModel> {
     return this.categoryService.create(data, user.id);
+  }
+
+  @Mutation(() => CategoryModel)
+  async updateCategory(
+    @Arg('data', () => UpdateCategoryInput) data: UpdateCategoryInput,
+    @Arg('id', () => String) id: string,
+  ): Promise<CategoryModel> {
+    return this.categoryService.updateCategory(id, data);
   }
 
   @FieldResolver(() => UserModel)
