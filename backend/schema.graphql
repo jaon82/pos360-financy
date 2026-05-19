@@ -42,6 +42,7 @@ type Mutation {
   createCategory(data: CategoryInput!): CategoryModel!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
+  updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
 }
 
 type Query {
