@@ -1,5 +1,8 @@
 import { prismaClient } from '../../prisma/prisma';
-import type { CategoryInput } from '../dtos/input/category.input';
+import type {
+  CategoryInput,
+  UpdateCategoryInput,
+} from '../dtos/input/category.input';
 import type { CategoryModel } from '../models/category.model';
 
 export class CategoryService {
@@ -21,6 +24,47 @@ export class CategoryService {
         authorId: authorId,
       },
     });
+
+    return category;
+  }
+
+  async updateCategory(
+    id: string,
+    data: UpdateCategoryInput,
+  ): Promise<CategoryModel> {
+    if (!id) {
+      throw new Error('Id da categoria obrigatório');
+    }
+
+    const category = await prismaClient.category.findUnique({
+      where: { id },
+    });
+
+    if (!category) {
+      throw new Error('Categoria não encontrada');
+    }
+
+    const updatedCategory = await prismaClient.category.update({
+      where: { id },
+      data: {
+        title: data.title ?? category.title,
+        description: data.description ?? category.description,
+        icon: data.icon ?? category.icon,
+        color: data.color ?? category.color,
+      },
+    });
+
+    return updatedCategory;
+  }
+
+  async findCategoryById(id: string): Promise<CategoryModel> {
+    const category = await prismaClient.category.findUnique({
+      where: { id },
+    });
+
+    if (!category) {
+      throw new Error('Categoria não encontrada');
+    }
 
     return category;
   }
