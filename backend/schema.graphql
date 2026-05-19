@@ -60,6 +60,13 @@ type RegisterOutput {
   user: UserModel!
 }
 
+input UpdateCategoryInput {
+  color: String
+  description: String
+  icon: String
+  title: String
+}
+
 type UserModel {
   createdAt: DateTimeISO!
   email: String!
