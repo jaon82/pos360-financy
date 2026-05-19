@@ -39,6 +39,7 @@ type LoginOutput {
 }
 
 type Mutation {
+  createCategory(data: CategoryInput!): CategoryModel!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
 }
