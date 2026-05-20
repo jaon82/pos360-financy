@@ -40,15 +40,19 @@ type LoginOutput {
 
 type Mutation {
   createCategory(data: CategoryInput!): CategoryModel!
+  createTransaction(data: TransactionInput!): TransactionModel!
   deleteCategory(id: String!): Boolean!
+  deleteTransaction(id: String!): Boolean!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
   updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
+  updateTransaction(data: UpdateTransactionInput!, id: String!): TransactionModel!
 }
 
 type Query {
   getUser(id: String!): UserModel!
   listCategories: [CategoryModel!]!
+  listTransactions: [TransactionModel!]!
 }
 
 input RegisterInput {
@@ -63,11 +67,41 @@ type RegisterOutput {
   user: UserModel!
 }
 
+input TransactionInput {
+  amount: Float!
+  categoryId: String!
+  date: DateTimeISO!
+  description: String!
+  type: String!
+}
+
+type TransactionModel {
+  amount: Float!
+  author: UserModel
+  authorId: String!
+  category: CategoryModel
+  categoryId: String!
+  createdAt: DateTimeISO!
+  date: DateTimeISO!
+  description: String!
+  id: ID!
+  type: String!
+  updatedAt: DateTimeISO!
+}
+
 input UpdateCategoryInput {
   color: String
   description: String
   icon: String
   title: String
+}
+
+input UpdateTransactionInput {
+  amount: Float
+  categoryId: String
+  date: DateTimeISO
+  description: String
+  type: String
 }
 
 type UserModel {
