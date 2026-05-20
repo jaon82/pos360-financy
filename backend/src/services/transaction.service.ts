@@ -107,4 +107,12 @@ export class TransactionService {
 
     return transactions;
   }
+
+  async countTransactionsByCategoryId(categoryId: string): Promise<number> {
+    const count = await prismaClient.transaction.count({
+      where: { categoryId },
+    });
+
+    return count;
+  }
 }
