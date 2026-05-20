@@ -47,6 +47,7 @@ type Mutation {
 
 type Query {
   getUser(id: String!): UserModel!
+  listCategories: [CategoryModel!]!
 }
 
 input RegisterInput {
