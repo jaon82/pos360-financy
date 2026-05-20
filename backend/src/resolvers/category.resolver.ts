@@ -46,6 +46,12 @@ export class CategoryResolver {
     return this.categoryService.findAllCategories();
   }
 
+  @Mutation(() => Boolean)
+  async deleteCategory(@Arg('id', () => String) id: string): Promise<boolean> {
+    await this.categoryService.deleteCategory(id);
+    return true;
+  }
+
   @FieldResolver(() => UserModel)
   async author(@Root() category: CategoryModel): Promise<UserModel> {
     return this.userService.findUserById(category.authorId);

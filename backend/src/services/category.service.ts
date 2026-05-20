@@ -73,4 +73,18 @@ export class CategoryService {
     const categories = await prismaClient.category.findMany();
     return categories;
   }
+
+  async deleteCategory(id: string): Promise<void> {
+    const category = await prismaClient.category.findUnique({
+      where: { id },
+    });
+
+    if (!category) {
+      throw new Error('Categoria não encontrada');
+    }
+
+    await prismaClient.category.delete({
+      where: { id },
+    });
+  }
 }
