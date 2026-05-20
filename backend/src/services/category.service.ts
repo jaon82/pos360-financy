@@ -68,4 +68,9 @@ export class CategoryService {
 
     return category;
   }
+
+  async findAllCategories(): Promise<CategoryModel[]> {
+    const categories = await prismaClient.category.findMany();
+    return categories;
+  }
 }
