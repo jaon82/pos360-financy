@@ -61,7 +61,14 @@ export class CategoryResolver {
   }
 
   @FieldResolver(() => [TransactionModel])
-  async transactions(@Root() category: CategoryModel) {
+  async transactions(
+    @Root() category: CategoryModel,
+  ): Promise<TransactionModel[]> {
     return this.transactionsService.findTransactionsByCategoryId(category.id);
+  }
+
+  @FieldResolver(() => Number)
+  async transactionsCount(@Root() category: CategoryModel): Promise<number> {
+    return this.transactionsService.countTransactionsByCategoryId(category.id);
   }
 }
