@@ -2,6 +2,7 @@ import {
   Arg,
   FieldResolver,
   Mutation,
+  Query,
   Resolver,
   Root,
   UseMiddleware,
@@ -38,6 +39,11 @@ export class CategoryResolver {
     @Arg('id', () => String) id: string,
   ): Promise<CategoryModel> {
     return this.categoryService.updateCategory(id, data);
+  }
+
+  @Query(() => [CategoryModel])
+  async listCategories(): Promise<CategoryModel[]> {
+    return this.categoryService.findAllCategories();
   }
 
   @FieldResolver(() => UserModel)
