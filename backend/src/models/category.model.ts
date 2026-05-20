@@ -1,4 +1,5 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from 'type-graphql';
+import { TransactionModel } from './transaction.model';
 import { UserModel } from './user.model';
 
 @ObjectType()
@@ -29,4 +30,7 @@ export class CategoryModel {
 
   @Field(() => GraphQLISODateTime)
   updatedAt!: Date;
+
+  @Field(() => [TransactionModel], { nullable: true })
+  transactions?: TransactionModel[];
 }

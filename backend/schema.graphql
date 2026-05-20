@@ -19,6 +19,7 @@ type CategoryModel {
   icon: String!
   id: ID!
   title: String!
+  transactions: [TransactionModel!]
   updatedAt: DateTimeISO!
 }
 
