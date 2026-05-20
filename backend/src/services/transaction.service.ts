@@ -99,4 +99,12 @@ export class TransactionService {
       where: { id },
     });
   }
+
+  async findTransactionsByCategoryId(categoryId: string) {
+    const transactions = await prismaClient.transaction.findMany({
+      where: { categoryId },
+    });
+
+    return transactions;
+  }
 }
