@@ -1,6 +1,7 @@
 import { Input as InputPrimitive } from '@base-ui/react/input';
 import type { LucideIcon } from 'lucide-react';
-import type * as React from 'react';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface InputProps extends React.ComponentProps<'input'> {
@@ -17,6 +18,13 @@ function Input({
   type,
   ...props
 }: InputProps) {
+  const [inputType, setInputType] = useState(type || 'text');
+
+  const handleToggleViewPassword = () => {
+    setInputType((oldInputType) => {
+      return oldInputType === 'password' ? 'text' : 'password';
+    });
+  };
   return (
     <div className="flex items-center gap-3 py-3.5 px-3 rounded-lg border border-gray-300 bg-white has-disabled:opacity-50">
       {Icon && (
@@ -32,7 +40,7 @@ function Input({
         />
       )}
       <InputPrimitive
-        type={type}
+        type={inputType}
         data-slot="input"
         aria-invalid={hasError}
         className={cn(
@@ -43,6 +51,14 @@ function Input({
         )}
         {...props}
       />
+      {type === 'password' && (
+        <DynamicIcon
+          name={inputType === 'password' ? 'eye-closed' : 'eye-off'}
+          size={24}
+          className="cursor-pointer"
+          onClick={handleToggleViewPassword}
+        />
+      )}
     </div>
   );
 }
