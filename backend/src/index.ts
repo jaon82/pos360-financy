@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
+import cors from 'cors';
 import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { buildContext } from './graphql/context';
@@ -26,6 +27,7 @@ async function startServer() {
   });
   await server.start();
 
+  app.use(cors());
   app.use(
     '/graphql',
     express.json(),
