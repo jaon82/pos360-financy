@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { apolloClient } from '@/lib/apollo';
+import { apolloClient } from '@/lib/graphql/apollo';
 import { LOGIN } from '@/lib/graphql/mutations/Login';
 import { REGISTER } from '@/lib/graphql/mutations/Register';
 import type { AuthResponse, User } from '@/types';
