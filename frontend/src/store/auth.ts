@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { apolloClient } from '@/lib/apollo';
+import { LOGIN } from '@/lib/graphql/mutations/Login';
 import { REGISTER } from '@/lib/graphql/mutations/Register';
 import type { AuthResponse, User } from '@/types';
 
@@ -10,16 +11,26 @@ interface RegisterInput {
   password: string;
 }
 
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
 interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
   register: (registerInput: RegisterInput) => Promise<boolean>;
+  login: (loginInput: LoginInput) => Promise<boolean>;
   clearAuthData: () => void;
 }
 
 type RegisterResponse = {
   register: AuthResponse;
+};
+
+type LoginResponse = {
+  login: AuthResponse;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -49,6 +60,30 @@ export const useAuthStore = create<AuthState>()(
           }
         } catch (error) {
           console.error('Erro ao fazer cadastro:', error);
+          throw error;
+        }
+      },
+      login: async ({ email, password }: LoginInput) => {
+        try {
+          // Call your login API here and get the response
+          const { data, error } = await apolloClient.mutate<LoginResponse>({
+            mutation: LOGIN,
+            variables: { data: { email, password } },
+          });
+          if (data?.login) {
+            const { token, user } = data.login;
+            set({
+              user,
+              token,
+              isAuthenticated: true,
+            });
+            return true;
+          } else {
+            console.error('Login falhou:', error?.message);
+            return false;
+          }
+        } catch (error) {
+          console.error('Erro ao fazer login:', error);
           throw error;
         }
       },
