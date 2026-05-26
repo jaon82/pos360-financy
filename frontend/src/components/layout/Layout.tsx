@@ -7,7 +7,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      <div className="mx-auto w-full max-w-7xl">{children}</div>
+      <div className="mx-auto w-full">{children}</div>
       <Toaster />
     </div>
   );
