@@ -24,7 +24,8 @@
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
-    }
+    },
+    "experimentalEmbeddedSnippetsEnabled": true
   },
   "assist": {
     "enabled": true,
