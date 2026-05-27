@@ -21,7 +21,7 @@ export default function PageHeader({
         <p className="text-gray-600">{description}</p>
       </div>
       <div>
-        <Button onClick={onButtonClick}>
+        <Button onClick={onButtonClick} size="sm">
           <Plus className="w-4" />
           {buttonText}
         </Button>

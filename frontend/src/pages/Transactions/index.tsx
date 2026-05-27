@@ -6,7 +6,7 @@ export default function Transactions() {
   const [openForm, setOpenForm] = useState(false);
 
   return (
-    <div className="flex flex-col gap-8 p-12">
+    <div className="flex flex-col gap-8">
       <PageHeader
         title="Transações"
         description="Gerencie todas as suas transações financeiras"
