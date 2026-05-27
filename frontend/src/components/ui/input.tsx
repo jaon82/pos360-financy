@@ -39,6 +39,7 @@ function Input({
           )}
         />
       )}
+      {prefix && <span className="text-black">{prefix}</span>}
       <InputPrimitive
         type={inputType}
         data-slot="input"
