@@ -5,12 +5,14 @@ interface PageHeaderProps {
   title: string;
   description: string;
   buttonText: string;
+  onButtonClick: () => void;
 }
 
 export default function PageHeader({
   title,
   description,
   buttonText,
+  onButtonClick,
 }: PageHeaderProps) {
   return (
     <div className="flex justify-between items-center">
@@ -19,7 +21,7 @@ export default function PageHeader({
         <p className="text-gray-600">{description}</p>
       </div>
       <div>
-        <Button>
+        <Button onClick={onButtonClick}>
           <Plus className="w-4" />
           {buttonText}
         </Button>
