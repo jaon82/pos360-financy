@@ -50,13 +50,13 @@ export default function CategoryForm({
     { value: 'receipt-text' },
   ];
   const colorOptions = [
-    { value: 'green-base', bgColor: 'bg-green-base' },
-    { value: 'blue-base', bgColor: 'bg-blue-base' },
-    { value: 'purple-base', bgColor: 'bg-purple-base' },
-    { value: 'pink-base', bgColor: 'bg-pink-base' },
-    { value: 'red-base', bgColor: 'bg-red-base' },
-    { value: 'orange-base', bgColor: 'bg-orange-base' },
-    { value: 'yellow-base', bgColor: 'bg-yellow-base' },
+    { value: 'green', bgColor: 'bg-green-base' },
+    { value: 'blue', bgColor: 'bg-blue-base' },
+    { value: 'purple', bgColor: 'bg-purple-base' },
+    { value: 'pink', bgColor: 'bg-pink-base' },
+    { value: 'red', bgColor: 'bg-red-base' },
+    { value: 'orange', bgColor: 'bg-orange-base' },
+    { value: 'yellow', bgColor: 'bg-yellow-base' },
   ];
   const [createCategory, { loading }] = useMutation(CREATE_CATEGORY, {
     onCompleted: () => {
