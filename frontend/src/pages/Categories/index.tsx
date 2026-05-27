@@ -39,6 +39,24 @@ export default function Categories() {
 
   const categories = data?.listCategories || [];
 
+  const categoriesCount = categories.length;
+  const transactionsCount = categories.reduce(
+    (total, category) => total + (category.transactionsCount || 0),
+    0,
+  );
+  const mostUsedCategory = categories.reduce(
+    (mostUsed, category) => {
+      if (
+        !mostUsed ||
+        (category.transactionsCount || 0) > (mostUsed.transactionsCount || 0)
+      ) {
+        return category;
+      }
+      return mostUsed;
+    },
+    undefined as Category | undefined,
+  );
+
   const handleEditCategory = (id: string) => {
     setSelectedCategoryId(id);
     setOpenForm(true);
@@ -60,19 +78,19 @@ export default function Categories() {
         <CategorySummaryCard
           icon={Tag}
           iconColor="text-gray-700"
-          title="8"
+          title={categoriesCount.toString()}
           description="total de categorias"
         />
         <CategorySummaryCard
           icon={ArrowUpDown}
           iconColor="text-purple-base"
-          title="27"
+          title={transactionsCount.toString()}
           description="total de transações"
         />
         <CategorySummaryCard
           icon={Utensils}
           iconColor="text-blue-base"
-          title="Alimentação"
+          title={mostUsedCategory?.title || 'N/A'}
           description="categoria mais utilizada"
         />
       </div>
