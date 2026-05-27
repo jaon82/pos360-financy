@@ -22,7 +22,7 @@ interface AuthState {
   isAuthenticated: boolean;
   register: (registerInput: RegisterInput) => Promise<boolean>;
   login: (loginInput: LoginInput) => Promise<boolean>;
-  clearAuthData: () => void;
+  logout: () => void;
 }
 
 type RegisterResponse = {
@@ -87,8 +87,10 @@ export const useAuthStore = create<AuthState>()(
           throw error;
         }
       },
-      clearAuthData: () =>
-        set({ user: null, token: null, isAuthenticated: false }),
+      logout: () => {
+        set({ user: null, token: null, isAuthenticated: false });
+        apolloClient.clearStore(); // Clear Apollo Client cache on logout
+      },
     }),
     {
       name: 'auth-storage', // name of the item in storage

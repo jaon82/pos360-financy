@@ -1,4 +1,5 @@
-import { Link, useLocation } from 'react-router';
+import { LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useAuthStore } from '@/store/auth';
 import Logo from '../../assets/logo.svg';
 import { Avatar, AvatarFallback } from '../ui/avatar';
@@ -6,13 +7,19 @@ import { Button } from '../ui/button';
 
 export default function Header() {
   const { pathname } = useLocation();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: 'Dashboard', path: '/' },
     { name: 'Transações', path: '/transactions' },
     { name: 'Categorias', path: '/categories' },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login'); // Redirect to login page after logout
+  };
 
   return (
     <header className=" bg-white border border-gray-200">
@@ -35,13 +42,18 @@ export default function Header() {
             ))}
           </ul>
         </nav>
-        <Link to="/profile">
-          <Avatar className="w-9 h-9">
-            <AvatarFallback className="bg-gray-300">
-              {user?.name?.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link to="/profile">
+            <Avatar className="w-9 h-9">
+              <AvatarFallback className="bg-gray-300">
+                {user?.name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
+          <Button variant="outline" size="icon" onClick={handleLogout}>
+            <LogOut />
+          </Button>
+        </div>
       </div>
     </header>
   );
