@@ -12,10 +12,15 @@ import type { Category } from '@/types';
 
 interface CategoryCardProps {
   category: Category;
-  onEdit?: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-export default function CategoryCard({ category, onEdit }: CategoryCardProps) {
+export default function CategoryCard({
+  category,
+  onEdit,
+  onDelete,
+}: CategoryCardProps) {
   const bgColor = `bg-${category.color}-light`;
   const iconColor = `text-${category.color}-base`;
   const textColor = `text-${category.color}-dark`;
@@ -32,7 +37,7 @@ export default function CategoryCard({ category, onEdit }: CategoryCardProps) {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={onDelete}>
             <Trash className="w-4 h-4 text-danger" />
           </Button>
           <Button variant="outline" size="icon" onClick={onEdit}>

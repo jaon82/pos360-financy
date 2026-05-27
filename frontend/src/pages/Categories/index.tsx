@@ -1,7 +1,9 @@
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { ArrowUpDown, Tag, Utensils } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import PageHeader from '@/components/PageHeader';
+import { DELETE_CATEGORY } from '@/lib/graphql/mutations/Category';
 import { LIST_CATEGORIES } from '@/lib/graphql/queries/Category';
 import type { Category } from '@/types';
 import CategoryCard from './components/CategoryCard';
@@ -17,14 +19,33 @@ export default function Categories() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<
     string | undefined
   >(undefined);
+
   const { data, loading, error } =
     useQuery<ListCategoriesData>(LIST_CATEGORIES);
+
+  const [deleteCategory] = useMutation(DELETE_CATEGORY, {
+    onCompleted: () => {
+      toast.success('Categoria removida com sucesso!');
+    },
+    onError: (error) => {
+      console.error('Erro ao remover categoria:', error);
+      toast.error(
+        error.message ||
+          'Erro ao remover categoria. Por favor, tente novamente.',
+      );
+    },
+    refetchQueries: [LIST_CATEGORIES],
+  });
 
   const categories = data?.listCategories || [];
 
   const handleEditCategory = (id: string) => {
     setSelectedCategoryId(id);
     setOpenForm(true);
+  };
+
+  const handleDeleteCategory = (id: string) => {
+    deleteCategory({ variables: { deleteCategoryId: id } });
   };
 
   return (
@@ -61,6 +82,7 @@ export default function Categories() {
             key={category.id}
             category={category}
             onEdit={() => handleEditCategory(category.id)}
+            onDelete={() => handleDeleteCategory(category.id)}
           />
         ))}
       </div>
