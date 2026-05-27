@@ -15,7 +15,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-12 gap-2 px-4 py-3 in-data-[slot=button-group]:rounded-md',
-        sm: 'h-9 gap-2 px-3 py-2 rounded-[min(var(--radius-md),10px)] px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5',
+        sm: 'h-9 gap-2 px-3 py-2 text-sm rounded-[min(var(--radius-md),10px)] px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5',
         icon: 'size-8 px-2 py-2',
       },
     },
