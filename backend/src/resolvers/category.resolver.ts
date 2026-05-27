@@ -49,6 +49,13 @@ export class CategoryResolver {
     return this.categoryService.findAllCategories();
   }
 
+  @Query(() => CategoryModel)
+  async getCategory(
+    @Arg('id', () => String) id: string,
+  ): Promise<CategoryModel> {
+    return this.categoryService.findCategoryById(id);
+  }
+
   @Mutation(() => Boolean)
   async deleteCategory(@Arg('id', () => String) id: string): Promise<boolean> {
     await this.categoryService.deleteCategory(id);

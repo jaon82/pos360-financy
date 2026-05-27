@@ -14,10 +14,18 @@ interface ListCategoriesData {
 
 export default function Categories() {
   const [openForm, setOpenForm] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >(undefined);
   const { data, loading, error } =
     useQuery<ListCategoriesData>(LIST_CATEGORIES);
 
   const categories = data?.listCategories || [];
+
+  const handleEditCategory = (id: string) => {
+    setSelectedCategoryId(id);
+    setOpenForm(true);
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -49,10 +57,18 @@ export default function Categories() {
       </div>
       <div className="grid grid-cols-4 gap-4">
         {categories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
+          <CategoryCard
+            key={category.id}
+            category={category}
+            onEdit={() => handleEditCategory(category.id)}
+          />
         ))}
       </div>
-      <CategoryForm open={openForm} onOpenChange={setOpenForm} />
+      <CategoryForm
+        open={openForm}
+        onOpenChange={setOpenForm}
+        id={selectedCategoryId}
+      />
     </div>
   );
 }

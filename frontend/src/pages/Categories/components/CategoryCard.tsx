@@ -12,9 +12,10 @@ import type { Category } from '@/types';
 
 interface CategoryCardProps {
   category: Category;
+  onEdit?: () => void;
 }
 
-export default function CategoryCard({ category }: CategoryCardProps) {
+export default function CategoryCard({ category, onEdit }: CategoryCardProps) {
   const bgColor = `bg-${category.color}-light`;
   const iconColor = `text-${category.color}-base`;
   const textColor = `text-${category.color}-dark`;
@@ -34,7 +35,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
           <Button variant="outline" size="icon">
             <Trash className="w-4 h-4 text-danger" />
           </Button>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={onEdit}>
             <SquarePen className="w-4 h-4 text-gray-700" />
           </Button>
         </div>
@@ -49,7 +50,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
       </CardContent>
       <CardFooter className="flex justify-between items-center p-0">
         <Badge className={`${bgColor} ${textColor}`}>{category.title}</Badge>
-        <div>{category.transactionsCount} itens</div>
+        <div>{category.transactionsCount ?? 0} itens</div>
       </CardFooter>
     </Card>
   );

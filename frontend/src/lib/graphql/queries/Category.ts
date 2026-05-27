@@ -15,3 +15,15 @@ export const LIST_CATEGORIES = gql`
     }
   }
 `;
+
+export const GET_CATEGORY = gql`
+  query GetCategory($getCategoryId: String!) {
+    getCategory(id: $getCategoryId) {
+      id
+      title
+      description
+      icon
+      color
+    }
+  }
+`;
