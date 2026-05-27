@@ -5,6 +5,7 @@ import Dashboard from '@/pages/Dashboard';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Transactions from '@/pages/Transactions';
+import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 
 export default function AppRoutes() {
@@ -27,9 +28,30 @@ export default function AppRoutes() {
         }
       />
       <Route element={<AuthLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/categories" element={<Categories />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Transactions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <ProtectedRoute>
+              <Categories />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );
