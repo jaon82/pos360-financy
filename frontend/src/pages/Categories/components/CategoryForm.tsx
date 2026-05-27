@@ -20,7 +20,7 @@ import {
   CREATE_CATEGORY,
   UPDATE_CATEGORY,
 } from '@/lib/graphql/mutations/Category';
-import { GET_CATEGORY } from '@/lib/graphql/queries/Category';
+import { GET_CATEGORY, LIST_CATEGORIES } from '@/lib/graphql/queries/Category';
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types';
 
@@ -81,6 +81,7 @@ export default function CategoryForm({
         error.message || 'Erro ao criar categoria. Por favor, tente novamente.',
       );
     },
+    refetchQueries: [LIST_CATEGORIES], // Refetch categories after creation
   });
 
   const [updateCategory, { loading: updating }] = useMutation(UPDATE_CATEGORY, {
