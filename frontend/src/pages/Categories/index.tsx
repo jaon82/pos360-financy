@@ -7,6 +7,7 @@ import { DELETE_CATEGORY } from '@/lib/graphql/mutations/Category';
 import { LIST_CATEGORIES } from '@/lib/graphql/queries/Category';
 import type { Category } from '@/types';
 import CategoryCard from './components/CategoryCard';
+import CategoryEditForm from './components/CategoryEditForm';
 import CategoryForm from './components/CategoryForm';
 import CategorySummaryCard from './components/CategorySummaryCard';
 
@@ -16,6 +17,7 @@ interface ListCategoriesData {
 
 export default function Categories() {
   const [openForm, setOpenForm] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<
     string | undefined
   >(undefined);
@@ -59,7 +61,7 @@ export default function Categories() {
 
   const handleEditCategory = (id: string) => {
     setSelectedCategoryId(id);
-    setOpenForm(true);
+    setOpenEditForm(true);
   };
 
   const handleDeleteCategory = (id: string) => {
@@ -104,9 +106,10 @@ export default function Categories() {
           />
         ))}
       </div>
-      <CategoryForm
-        open={openForm}
-        onOpenChange={setOpenForm}
+      <CategoryForm open={openForm} onOpenChange={setOpenForm} />
+      <CategoryEditForm
+        open={openEditForm}
+        onOpenChange={setOpenEditForm}
         id={selectedCategoryId}
       />
     </div>

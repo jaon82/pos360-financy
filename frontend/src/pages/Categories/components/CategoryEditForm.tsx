@@ -1,6 +1,7 @@
-import { useMutation } from '@apollo/client/react';
+import { useLazyQuery, useMutation } from '@apollo/client/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -15,10 +16,17 @@ import {
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { CREATE_CATEGORY } from '@/lib/graphql/mutations/Category';
-import { LIST_CATEGORIES } from '@/lib/graphql/queries/Category';
+import {
+  CREATE_CATEGORY,
+  UPDATE_CATEGORY,
+} from '@/lib/graphql/mutations/Category';
+import { GET_CATEGORY, LIST_CATEGORIES } from '@/lib/graphql/queries/Category';
 import { cn } from '@/lib/utils';
+import type { Category } from '@/types';
 
+interface CategoryData {
+  getCategory: Category;
+}
 interface IconOptioms {
   value: IconName;
 }
@@ -26,11 +34,13 @@ interface IconOptioms {
 interface CategoryFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  id?: string;
 }
 
-export default function CategoryForm({
+export default function CategoryEditForm({
   open,
   onOpenChange,
+  id,
 }: CategoryFormProps) {
   const iconsOptions: IconOptioms[] = [
     { value: 'briefcase-business' },
@@ -59,20 +69,27 @@ export default function CategoryForm({
     { value: 'orange', bgColor: 'bg-orange-base' },
     { value: 'yellow', bgColor: 'bg-yellow-base' },
   ];
-  const [createCategory, { loading }] = useMutation(CREATE_CATEGORY, {
-    onCompleted: () => {
-      toast.success('Categoria criada com sucesso!');
-      reset();
-      onOpenChange(false);
+
+  const [updateCategory, { loading: isUpdating }] = useMutation(
+    UPDATE_CATEGORY,
+    {
+      onCompleted: () => {
+        toast.success('Categoria atualizada com sucesso!');
+        reset();
+        onOpenChange(false);
+      },
+      onError: (error) => {
+        console.error('Erro ao atualizar categoria:', error);
+        toast.error(
+          error.message ||
+            'Erro ao atualizar categoria. Por favor, tente novamente.',
+        );
+      },
     },
-    onError: (error) => {
-      console.error('Erro ao criar categoria:', error);
-      toast.error(
-        error.message || 'Erro ao criar categoria. Por favor, tente novamente.',
-      );
-    },
-    refetchQueries: [LIST_CATEGORIES], // Refetch categories after creation
-  });
+  );
+
+  const [getCategory, { data: categoryData, loading: loadingCategory }] =
+    useLazyQuery<CategoryData>(GET_CATEGORY);
 
   const categoryFormSchema = z.object({
     title: z.string(),
@@ -100,7 +117,9 @@ export default function CategoryForm({
 
   const onSubmit = async (formData: CategoryForm) => {
     try {
-      await createCategory({ variables: { data: formData } });
+      await updateCategory({
+        variables: { updateCategoryId: id, data: formData },
+      });
       reset();
       onOpenChange(false);
     } catch (error) {
@@ -115,11 +134,31 @@ export default function CategoryForm({
     onOpenChange(open);
   };
 
+  useEffect(() => {
+    if (id) {
+      getCategory({ variables: { getCategoryId: id } });
+    }
+  }, [id, getCategory]);
+
+  const { getCategory: category } = categoryData || {};
+
+  // Set form values when category data is loaded
+  useEffect(() => {
+    if (category) {
+      reset({
+        title: category.title,
+        description: category.description || '',
+        icon: category.icon,
+        color: category.color,
+      });
+    }
+  }, [category, reset]);
+
   return (
     <Dialog open={open} onOpenChange={handleToggleForm}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Nova categoria</DialogTitle>
+          <DialogTitle>Editar categoria</DialogTitle>
           <DialogDescription>
             Organize suas transações com categorias
           </DialogDescription>
@@ -197,7 +236,7 @@ export default function CategoryForm({
               </Field>
             )}
           />
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={isUpdating}>
             Salvar
           </Button>
         </form>
