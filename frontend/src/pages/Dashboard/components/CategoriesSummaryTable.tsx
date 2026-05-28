@@ -53,7 +53,7 @@ export default function CategoriesSummaryTable() {
           <TableHead colSpan={2} className="uppercase">
             Categorias
           </TableHead>
-          <TableHead className="text-right">
+          <TableHead className="text-right px-0">
             <Link to="/categories">
               <Button variant={'link'} className="text-sm">
                 Gerenciar
@@ -66,7 +66,7 @@ export default function CategoriesSummaryTable() {
       <TableBody>
         {categories.map((category) => (
           <TableRow key={category.id}>
-            <TableCell>
+            <TableCell className="w-1/2">
               <Badge
                 className={`${getBgColor(category.color)} ${getTextColor(category.color)}`}
               >
@@ -76,7 +76,7 @@ export default function CategoriesSummaryTable() {
             <TableCell className="text-sm text-gray-600 text-right px-0">
               {category.transactionsCount ?? 0} itens
             </TableCell>
-            <TableCell className="font-semibold text-sm text-gray-800 text-right pl-0">
+            <TableCell className="font-semibold text-sm text-gray-800 text-right px-0 pr-6">
               {formatAmount(getCategoryTotalAmount(category))}
             </TableCell>
           </TableRow>

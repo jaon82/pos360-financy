@@ -95,22 +95,24 @@ export default function RecentTransactionsTable() {
                   </span>
                 </div>
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell className="w-40 text-center">
                 <Badge
                   className={`${getBgColor(transaction.category.color)} ${getTextColor(transaction.category.color)}`}
                 >
                   {transaction.category.title}
                 </Badge>
               </TableCell>
-              <TableCell className="flex justify-end items-center gap-2 font-semibold text-gray-800 text-right">
-                <div>
-                  {transaction.type === 'outcome' ? '-' : '+'}
-                  {formatAmount(transaction.amount)}
+              <TableCell className="w-40 font-semibold text-gray-800">
+                <div className="flex justify-end items-center gap-2">
+                  <div>
+                    {transaction.type === 'outcome' ? '-' : '+'}
+                    {formatAmount(transaction.amount)}
+                  </div>
+                  <TransactionTypeIndicator
+                    type={transaction.type}
+                    variant="icon"
+                  />
                 </div>
-                <TransactionTypeIndicator
-                  type={transaction.type}
-                  variant="icon"
-                />
               </TableCell>
             </TableRow>
           ))}
