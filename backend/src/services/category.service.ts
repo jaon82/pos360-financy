@@ -8,7 +8,7 @@ import type { CategoryModel } from '../models/category.model';
 export class CategoryService {
   async create(data: CategoryInput, authorId: string): Promise<CategoryModel> {
     const existingCategory = await prismaClient.category.findUnique({
-      where: { title: data.title },
+      where: { title_authorId: { title: data.title, authorId } },
     });
 
     if (existingCategory) {
