@@ -26,6 +26,7 @@ export const GET_TRANSACTION = gql`
       date
       amount
       category {
+        id
         title
         icon
         color

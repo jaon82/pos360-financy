@@ -20,8 +20,11 @@ import type { Transaction } from '@/types';
 interface ListTransactionsData {
   listTransactions: Transaction[];
 }
+interface TransactionsTableProps {
+  onEdit: (id: string) => void;
+}
 
-export default function TransactionsTable() {
+export default function TransactionsTable({ onEdit }: TransactionsTableProps) {
   const { data: transactionsResponse } =
     useQuery<ListTransactionsData>(LIST_TRANSACTIONS);
   const transactions = transactionsResponse?.listTransactions || [];
@@ -55,6 +58,7 @@ export default function TransactionsTable() {
       day: '2-digit',
       month: '2-digit',
       year: '2-digit',
+      timeZone: 'UTC',
     });
   };
 
@@ -64,8 +68,6 @@ export default function TransactionsTable() {
       currency: 'BRL',
     });
   };
-
-  const handleEdit = () => {};
 
   const handleDeleteTransaction = (id: string) => {
     deleteTransaction({ variables: { deleteTransactionId: id } });
@@ -126,7 +128,11 @@ export default function TransactionsTable() {
               >
                 <Trash className="w-4 h-4 text-danger" />
               </Button>
-              <Button variant="outline" size="icon" onClick={handleEdit}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => onEdit(transaction.id)}
+              >
                 <SquarePen className="w-4 h-4 text-gray-700" />
               </Button>
             </TableCell>
