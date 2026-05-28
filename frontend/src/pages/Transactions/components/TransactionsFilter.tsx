@@ -53,6 +53,24 @@ export default function TransactionsFilter({
     useQuery<ListCategoriesData>(LIST_CATEGORIES);
   const categories = categoriesResponse?.listCategories || [];
 
+  const typeLabels: Record<string, string> = {
+    all: 'Todos',
+    income: 'Receita',
+    outcome: 'Despesa',
+  };
+
+  const selectedTypeLabel = filters.type ? typeLabels[filters.type] : undefined;
+  const selectedCategoryLabel = filters.categoryId
+    ? filters.categoryId === 'all'
+      ? 'Todas'
+      : categories.find((c) => c.id === filters.categoryId)?.title
+    : undefined;
+  const selectedMonthYearLabel = filters.monthYear
+    ? filters.monthYear === 'all'
+      ? 'Todos'
+      : monthYearOptions.find((o) => o.value === filters.monthYear)?.label
+    : undefined;
+
   const handleChange = <K extends keyof TransactionFilters>(
     key: K,
     value: TransactionFilters[K],
@@ -81,7 +99,7 @@ export default function TransactionsFilter({
           onValueChange={(value) => handleChange('type', value ?? '')}
         >
           <SelectTrigger className="min-w-40">
-            <SelectValue placeholder="Tipo" />
+            <SelectValue placeholder="Tipo">{selectedTypeLabel}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -100,7 +118,9 @@ export default function TransactionsFilter({
           onValueChange={(value) => handleChange('categoryId', value ?? '')}
         >
           <SelectTrigger className="min-w-44">
-            <SelectValue placeholder="Categoria" />
+            <SelectValue placeholder="Categoria">
+              {selectedCategoryLabel}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -121,7 +141,9 @@ export default function TransactionsFilter({
           onValueChange={(value) => handleChange('monthYear', value ?? '')}
         >
           <SelectTrigger className="min-w-44">
-            <SelectValue placeholder="Período" />
+            <SelectValue placeholder="Período">
+              {selectedMonthYearLabel}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
