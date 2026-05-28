@@ -9,6 +9,7 @@ export const LIST_TRANSACTIONS = gql`
       date
       amount
       category {
+        id
         title
         icon
         color
