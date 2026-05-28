@@ -1,6 +1,7 @@
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { SquarePen, Trash } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
+import { toast } from 'sonner';
 import TransactionTypeIndicator from '@/components/TransactionType';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DELETE_TRANSACTION } from '@/lib/graphql/mutations/Transaction';
 import { LIST_TRANSACTIONS } from '@/lib/graphql/queries/Transaction';
 import type { Transaction } from '@/types';
 
@@ -23,6 +25,20 @@ export default function TransactionsTable() {
   const { data: transactionsResponse } =
     useQuery<ListTransactionsData>(LIST_TRANSACTIONS);
   const transactions = transactionsResponse?.listTransactions || [];
+
+  const [deleteTransaction] = useMutation(DELETE_TRANSACTION, {
+    onCompleted: () => {
+      toast.success('Transação removida com sucesso!');
+    },
+    onError: (error) => {
+      console.error('Erro ao remover transação:', error);
+      toast.error(
+        error.message ||
+          'Erro ao remover transação. Por favor, tente novamente.',
+      );
+    },
+    refetchQueries: [LIST_TRANSACTIONS],
+  });
 
   const getBgColor = (color: string) => {
     return `bg-${color}-light`;
@@ -50,7 +66,10 @@ export default function TransactionsTable() {
   };
 
   const handleEdit = () => {};
-  const handleDelete = () => {};
+
+  const handleDeleteTransaction = (id: string) => {
+    deleteTransaction({ variables: { deleteTransactionId: id } });
+  };
 
   return (
     <Table>
@@ -100,7 +119,11 @@ export default function TransactionsTable() {
               {formatAmount(transaction.amount)}
             </TableCell>
             <TableCell className="text-right">
-              <Button variant="outline" size="icon" onClick={handleDelete}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleDeleteTransaction(transaction.id)}
+              >
                 <Trash className="w-4 h-4 text-danger" />
               </Button>
               <Button variant="outline" size="icon" onClick={handleEdit}>
