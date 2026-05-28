@@ -50,6 +50,14 @@ export class TransactionResolver {
     return this.transactionService.findAllTransactions(user.id);
   }
 
+  @Query(() => TransactionModel)
+  async getTransaction(
+    @Arg('id', () => String) id: string,
+    @GqlUser() user: User,
+  ): Promise<TransactionModel> {
+    return this.transactionService.findTransactionById(id, user.id);
+  }
+
   @Mutation(() => Boolean)
   async deleteTransaction(
     @Arg('id', () => String) id: string,

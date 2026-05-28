@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PageHeader from '@/components/PageHeader';
 import TransactionForm from './components/TransactionForm';
+import TransactionsTable from './components/TransactionsTable';
 
 export default function Transactions() {
   const [openForm, setOpenForm] = useState(false);
@@ -13,6 +14,7 @@ export default function Transactions() {
         buttonText="Nova transação"
         onButtonClick={() => setOpenForm(true)}
       />
+      <TransactionsTable />
       <TransactionForm open={openForm} onOpenChange={setOpenForm} />
     </div>
   );

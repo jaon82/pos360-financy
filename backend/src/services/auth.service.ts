@@ -7,9 +7,9 @@ import { signJwt } from '../utils/jwt';
 
 export class AuthService {
   generateToken(user: UserModel): RegisterOutput {
-    const token = signJwt({ id: user.id, email: user.email }, '15m');
+    const token = signJwt({ id: user.id, email: user.email }, '1d');
 
-    const refreshToken = signJwt({ id: user.id, email: user.email }, '1d');
+    const refreshToken = signJwt({ id: user.id, email: user.email }, '7d');
 
     return { token, refreshToken, user };
   }

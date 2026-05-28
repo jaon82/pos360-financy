@@ -25,6 +25,7 @@ export interface Category {
 
 export interface Transaction {
   id: string;
+  type: 'income' | 'outcome';
   amount: number;
   date: string;
   description?: string;
