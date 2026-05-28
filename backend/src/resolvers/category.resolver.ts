@@ -40,25 +40,30 @@ export class CategoryResolver {
   async updateCategory(
     @Arg('data', () => UpdateCategoryInput) data: UpdateCategoryInput,
     @Arg('id', () => String) id: string,
+    @GqlUser() user: User,
   ): Promise<CategoryModel> {
-    return this.categoryService.updateCategory(id, data);
+    return this.categoryService.updateCategory(id, data, user.id);
   }
 
   @Query(() => [CategoryModel])
-  async listCategories(): Promise<CategoryModel[]> {
-    return this.categoryService.findAllCategories();
+  async listCategories(@GqlUser() user: User): Promise<CategoryModel[]> {
+    return this.categoryService.findAllCategories(user.id);
   }
 
   @Query(() => CategoryModel)
   async getCategory(
     @Arg('id', () => String) id: string,
+    @GqlUser() user: User,
   ): Promise<CategoryModel> {
-    return this.categoryService.findCategoryById(id);
+    return this.categoryService.findCategoryByIdAndUser(id, user.id);
   }
 
   @Mutation(() => Boolean)
-  async deleteCategory(@Arg('id', () => String) id: string): Promise<boolean> {
-    await this.categoryService.deleteCategory(id);
+  async deleteCategory(
+    @Arg('id', () => String) id: string,
+    @GqlUser() user: User,
+  ): Promise<boolean> {
+    await this.categoryService.deleteCategory(id, user.id);
     return true;
   }
 

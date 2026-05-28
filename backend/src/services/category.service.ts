@@ -31,6 +31,7 @@ export class CategoryService {
   async updateCategory(
     id: string,
     data: UpdateCategoryInput,
+    authorId: string,
   ): Promise<CategoryModel> {
     if (!id) {
       throw new Error('Id da categoria obrigatório');
@@ -42,6 +43,10 @@ export class CategoryService {
 
     if (!category) {
       throw new Error('Categoria não encontrada');
+    }
+
+    if (category.authorId !== authorId) {
+      throw new Error('Apenas o autor da categoria pode atualizá-la');
     }
 
     const updatedCategory = await prismaClient.category.update({
@@ -69,18 +74,43 @@ export class CategoryService {
     return category;
   }
 
-  async findAllCategories(): Promise<CategoryModel[]> {
-    const categories = await prismaClient.category.findMany();
-    return categories;
-  }
-
-  async deleteCategory(id: string): Promise<void> {
+  async findCategoryByIdAndUser(
+    id: string,
+    authorId: string,
+  ): Promise<CategoryModel> {
     const category = await prismaClient.category.findUnique({
       where: { id },
     });
 
     if (!category) {
       throw new Error('Categoria não encontrada');
+    }
+
+    if (category.authorId !== authorId) {
+      throw new Error('Apenas o autor da categoria pode visualizá-la');
+    }
+
+    return category;
+  }
+
+  async findAllCategories(authorId: string): Promise<CategoryModel[]> {
+    const categories = await prismaClient.category.findMany({
+      where: { authorId },
+    });
+    return categories;
+  }
+
+  async deleteCategory(id: string, authorId: string): Promise<void> {
+    const category = await prismaClient.category.findUnique({
+      where: { id },
+    });
+
+    if (!category) {
+      throw new Error('Categoria não encontrada');
+    }
+
+    if (category.authorId !== authorId) {
+      throw new Error('Apenas o autor da categoria pode deletá-la');
     }
 
     await prismaClient.category.delete({
