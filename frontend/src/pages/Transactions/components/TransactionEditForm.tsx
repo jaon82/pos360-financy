@@ -108,7 +108,7 @@ export default function TransactionEditForm({
             'Erro ao atualizar transação. Por favor, tente novamente.',
         );
       },
-      refetchQueries: ['ListTransactions'],
+      refetchQueries: ['ListTransactions', 'ListCategories'],
     },
   );
 

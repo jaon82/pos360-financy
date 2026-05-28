@@ -20,6 +20,7 @@ export interface Category {
   description?: string;
   icon: IconName;
   color: string;
+  transactions?: Transaction[];
   transactionsCount?: number;
 }
 

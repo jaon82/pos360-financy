@@ -43,13 +43,11 @@ export default function Header() {
           </ul>
         </nav>
         <div className="flex items-center gap-2">
-          <Link to="/profile">
-            <Avatar className="w-9 h-9">
-              <AvatarFallback className="bg-gray-300">
-                {user?.name?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-          </Link>
+          <Avatar className="w-9 h-9">
+            <AvatarFallback className="bg-gray-300">
+              {user?.name?.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
           <Button variant="outline" size="icon" onClick={handleLogout}>
             <LogOut />
           </Button>

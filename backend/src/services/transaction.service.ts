@@ -78,6 +78,7 @@ export class TransactionService {
   async findAllTransactions(authorId: string): Promise<TransactionModel[]> {
     const transactions = await prismaClient.transaction.findMany({
       where: { authorId },
+      orderBy: { date: 'desc' },
     });
     return transactions;
   }

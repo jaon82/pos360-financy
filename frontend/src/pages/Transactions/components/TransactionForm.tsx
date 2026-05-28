@@ -92,7 +92,7 @@ export default function TransactionForm({
             'Erro ao criar transação. Por favor, tente novamente.',
         );
       },
-      refetchQueries: ['ListTransactions'],
+      refetchQueries: ['ListTransactions', 'ListCategories'],
     },
   );
 
